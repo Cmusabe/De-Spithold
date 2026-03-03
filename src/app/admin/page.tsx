@@ -272,15 +272,15 @@ export default function AdminPage() {
               Afbeeldingen
             </h3>
             {imageKeys.map((key) => (
-              <div key={key} className="border border-[#EDE5D8] rounded-xl p-4 bg-[#FDFBF7]">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm font-medium text-[#5A5A5A]">
+              <div key={key} className="border border-[#EDE5D8] rounded-xl p-3 md:p-4 bg-[#FDFBF7]">
+                <div className="flex items-center justify-between mb-3 gap-2">
+                  <span className="text-sm font-medium text-[#5A5A5A] truncate">
                     {IMAGE_FIELDS[key]}
                   </span>
                   <button
                     onClick={() => triggerUpload(key)}
                     disabled={uploading === key}
-                    className="px-4 py-1.5 text-sm bg-[#2B4A3A] text-white rounded-lg hover:bg-[#1E3529] transition disabled:opacity-50 cursor-pointer"
+                    className="px-3 md:px-4 py-1.5 text-sm bg-[#2B4A3A] text-white rounded-lg hover:bg-[#1E3529] transition disabled:opacity-50 cursor-pointer whitespace-nowrap shrink-0"
                   >
                     {uploading === key ? "Uploaden..." : "Nieuwe foto"}
                   </button>
@@ -338,47 +338,68 @@ export default function AdminPage() {
       />
 
       {/* Top bar */}
-      <header className="bg-white border-b border-[#EDE5D8] px-6 py-4 flex items-center justify-between sticky top-0 z-50">
-        <div className="flex items-center gap-3">
-          <img
-            src="https://despithold.nl/wp-content/uploads/2022/11/Screenshot-2022-11-07-at-21.31.39-123x117.png"
-            alt="Logo"
-            className="h-8 rounded"
-          />
-          <span
-            className="text-lg text-[#1E3529]"
-            style={{ fontFamily: "Fraunces, serif", fontWeight: 600 }}
-          >
-            Admin Panel
-          </span>
-        </div>
-        <div className="flex items-center gap-3">
-          <a
-            href="/"
-            target="_blank"
-            className="px-4 py-2 text-sm text-[#5A5A5A] border border-[#EDE5D8] rounded-lg hover:bg-[#f8f6f3] transition no-underline"
-          >
-            Bekijk website
-          </a>
-          <button
-            onClick={handleSave}
-            disabled={saving}
-            className="px-6 py-2 text-sm bg-[#2B4A3A] text-white rounded-lg font-medium hover:bg-[#1E3529] transition disabled:opacity-50 cursor-pointer"
-          >
-            {saving ? "Opslaan..." : saved ? "Opgeslagen!" : "Opslaan"}
-          </button>
-          <button
-            onClick={handleLogout}
-            className="px-4 py-2 text-sm text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition cursor-pointer"
-          >
-            Uitloggen
-          </button>
+      <header className="bg-white border-b border-[#EDE5D8] px-4 md:px-6 py-3 md:py-4 sticky top-0 z-50">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 md:gap-3 min-w-0">
+            <img
+              src="https://despithold.nl/wp-content/uploads/2022/11/Screenshot-2022-11-07-at-21.31.39-123x117.png"
+              alt="Logo"
+              className="h-7 md:h-8 rounded shrink-0"
+            />
+            <span
+              className="text-base md:text-lg text-[#1E3529] truncate"
+              style={{ fontFamily: "Fraunces, serif", fontWeight: 600 }}
+            >
+              Admin
+            </span>
+          </div>
+          <div className="flex items-center gap-2 md:gap-3">
+            <a
+              href="/"
+              target="_blank"
+              className="hidden sm:inline-flex px-3 md:px-4 py-2 text-sm text-[#5A5A5A] border border-[#EDE5D8] rounded-lg hover:bg-[#f8f6f3] transition no-underline"
+            >
+              Bekijk site
+            </a>
+            <button
+              onClick={handleSave}
+              disabled={saving}
+              className="px-4 md:px-6 py-2 text-sm bg-[#2B4A3A] text-white rounded-lg font-medium hover:bg-[#1E3529] transition disabled:opacity-50 cursor-pointer"
+            >
+              {saving ? "..." : saved ? "Opgeslagen!" : "Opslaan"}
+            </button>
+            <button
+              onClick={handleLogout}
+              className="px-3 md:px-4 py-2 text-sm text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition cursor-pointer"
+            >
+              Uit
+            </button>
+          </div>
         </div>
       </header>
 
+      {/* Section tabs - horizontal on mobile, sidebar on desktop */}
+      <div className="md:hidden bg-white border-b border-[#EDE5D8] px-4 py-2 sticky top-[57px] z-40 overflow-x-auto">
+        <div className="flex gap-2 min-w-max">
+          {(Object.keys(SECTION_LABELS) as Section[]).map((section) => (
+            <button
+              key={section}
+              onClick={() => setActiveSection(section)}
+              className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition cursor-pointer ${
+                activeSection === section
+                  ? "bg-[#2B4A3A] text-white font-medium"
+                  : "text-[#5A5A5A] bg-[#f8f6f3] hover:bg-[#EDE5D8]"
+              }`}
+            >
+              {SECTION_LABELS[section]}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="flex">
-        {/* Sidebar */}
-        <aside className="w-64 bg-white border-r border-[#EDE5D8] min-h-[calc(100vh-65px)] p-4 sticky top-[65px]">
+        {/* Sidebar - hidden on mobile */}
+        <aside className="hidden md:block w-56 lg:w-64 bg-white border-r border-[#EDE5D8] min-h-[calc(100vh-65px)] p-4 sticky top-[65px] shrink-0">
           <nav className="space-y-1">
             {(Object.keys(SECTION_LABELS) as Section[]).map((section) => (
               <button
@@ -397,9 +418,9 @@ export default function AdminPage() {
         </aside>
 
         {/* Main content */}
-        <main className="flex-1 p-8 max-w-3xl">
+        <main className="flex-1 p-4 md:p-8 max-w-3xl min-w-0">
           <h2
-            className="text-2xl text-[#1E3529] mb-6"
+            className="text-xl md:text-2xl text-[#1E3529] mb-6"
             style={{ fontFamily: "Fraunces, serif", fontWeight: 600 }}
           >
             {SECTION_LABELS[activeSection]}

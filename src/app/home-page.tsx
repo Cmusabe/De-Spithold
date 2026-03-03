@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { SiteContent } from "@/lib/content";
 
 export function HomePage({ content }: { content: SiteContent }) {
   const heroImgRef = useRef<HTMLImageElement>(null);
   const navRef = useRef<HTMLElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     // Navbar scroll
@@ -43,6 +44,7 @@ export function HomePage({ content }: { content: SiteContent }) {
   }, []);
 
   const scrollTo = (id: string) => {
+    setMenuOpen(false);
     const el = document.getElementById(id);
     if (el) {
       const top = el.getBoundingClientRect().top + window.scrollY - 80;
@@ -55,7 +57,7 @@ export function HomePage({ content }: { content: SiteContent }) {
       {/* Navigation */}
       <nav
         ref={navRef}
-        className="fixed top-0 left-0 w-full z-[1000] px-6 md:px-12 py-5 flex items-center justify-between transition-all duration-500"
+        className={`fixed top-0 left-0 w-full z-[1000] px-6 md:px-12 py-5 flex items-center justify-between transition-all duration-500 ${menuOpen ? "menu-open" : ""}`}
         style={{ transitionTimingFunction: "cubic-bezier(0.22,1,0.36,1)" }}
       >
         <style>{`
@@ -64,6 +66,9 @@ export function HomePage({ content }: { content: SiteContent }) {
           nav.scrolled .nav-link { color: #5A5A5A !important; }
           nav.scrolled .nav-link:hover { color: #2B4A3A !important; }
           nav.scrolled .burger span { background: #1C1C1C !important; }
+          nav.menu-open { background: rgba(253,251,247,0.97); backdrop-filter: blur(20px); }
+          nav.menu-open .nav-text { color: #1E3529 !important; }
+          nav.menu-open .burger span { background: #1C1C1C !important; }
         `}</style>
         <a href="#" className="flex items-center gap-3 no-underline">
           <img
@@ -72,12 +77,13 @@ export function HomePage({ content }: { content: SiteContent }) {
             className="h-10 rounded"
           />
           <span
-            className="nav-text font-[var(--font-display)] text-xl font-semibold text-cream"
+            className="nav-text text-xl font-semibold text-cream"
             style={{ fontFamily: "Fraunces, serif", letterSpacing: "-0.02em" }}
           >
             De Spithold
           </span>
         </a>
+        {/* Desktop nav */}
         <ul className="hidden md:flex gap-10 list-none">
           {[
             ["over-ons", "Over Ons"],
@@ -95,6 +101,47 @@ export function HomePage({ content }: { content: SiteContent }) {
             </li>
           ))}
         </ul>
+        {/* Mobile hamburger */}
+        <button
+          className="burger md:hidden bg-transparent border-none cursor-pointer p-2 flex flex-col gap-[5px]"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Menu"
+        >
+          <span
+            className="block w-6 h-[2px] bg-cream transition-all duration-300"
+            style={menuOpen ? { transform: "rotate(45deg) translate(5px, 5px)" } : {}}
+          />
+          <span
+            className="block w-6 h-[2px] bg-cream transition-all duration-300"
+            style={menuOpen ? { opacity: 0 } : {}}
+          />
+          <span
+            className="block w-6 h-[2px] bg-cream transition-all duration-300"
+            style={menuOpen ? { transform: "rotate(-45deg) translate(5px, -5px)" } : {}}
+          />
+        </button>
+        {/* Mobile menu dropdown */}
+        {menuOpen && (
+          <div className="absolute top-full left-0 right-0 bg-white/97 backdrop-blur-xl shadow-lg md:hidden">
+            <ul className="flex flex-col list-none p-4 gap-1">
+              {[
+                ["over-ons", "Over Ons"],
+                ["boerderij", "Boerderij"],
+                ["geschiedenis", "Geschiedenis"],
+                ["contact", "Contact"],
+              ].map(([id, label]) => (
+                <li key={id}>
+                  <button
+                    onClick={() => scrollTo(id)}
+                    className="w-full text-left bg-transparent border-none text-[#5A5A5A] text-[0.95rem] font-medium py-3 px-4 rounded-lg cursor-pointer hover:bg-[#f8f6f3] transition-colors"
+                  >
+                    {label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </nav>
 
       {/* Hero */}

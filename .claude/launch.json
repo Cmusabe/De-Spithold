@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "spithold",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["http-server", "/Users/c/Documents/Het spithold", "-p", "8080", "-c-1"],
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "-p", "8080"],
       "port": 8080
     }
   ]

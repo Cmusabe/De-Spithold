@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>De Spithold — Biologische Melkveehouderij</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --forest: #2B4A3A;
+            --forest-deep: #1E3529;
+            --cream: #F6F1E9;
+            --cream-dark: #EDE5D8;
+            --earth: #9B7B5B;
+            --earth-light: #C4A882;
+            --sage: #8A9E7A;
+            --sage-muted: #C8D4BC;
+            --charcoal: #1C1C1C;
+            --charcoal-soft: #2E2E2E;
+            --warm-white: #FDFBF7;
+            --text-primary: #1C1C1C;
+            --text-secondary: #5A5A5A;
+            --text-light: #F6F1E9;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text-primary);
+            background: var(--warm-white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ─── Grain Overlay ─── */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 180px;
+        }
+
+        /* ─── Navigation ─── */
+        nav {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        nav.scrolled {
+            background: rgba(253, 251, 247, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 1rem 3rem;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--cream);
+            transition: color 0.5s;
+        }
+
+        nav.scrolled .nav-logo {
+            color: var(--forest-deep);
+        }
+
+        .nav-logo img {
+            height: 40px;
+            width: auto;
+            border-radius: 4px;
+            transition: height 0.5s;
+        }
+
+        nav.scrolled .nav-logo img {
+            height: 34px;
+        }
+
+        .nav-logo-text {
+            font-family: 'Fraunces', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--cream);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            position: relative;
+            transition: color 0.5s;
+        }
+
+        nav.scrolled .nav-links a {
+            color: var(--text-secondary);
+        }
+
+        nav.scrolled .nav-links a:hover {
+            color: var(--forest);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0;
+            height: 1.5px;
+            background: currentColor;
+            transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile menu */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--cream);
+            margin: 5px 0;
+            transition: all 0.3s;
+        }
+
+        nav.scrolled .menu-toggle span {
+            background: var(--charcoal);
+        }
+
+        /* ─── Hero Section ─── */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            align-items: flex-end;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -2;
+        }
+
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 40%;
+            transform: scale(1.1);
+            transition: transform 0.1s linear;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            background: linear-gradient(
+                180deg,
+                rgba(30, 53, 41, 0.3) 0%,
+                rgba(30, 53, 41, 0.1) 40%,
+                rgba(28, 28, 28, 0.5) 70%,
+                rgba(28, 28, 28, 0.85) 100%
+            );
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            padding: 0 3rem 5rem;
+            max-width: 900px;
+        }
+
+        .hero-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--sage-muted);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s 0.3s forwards;
+        }
+
+        .hero-label::before {
+            content: '';
+            display: inline-block;
+            width: 32px;
+            height: 1.5px;
+            background: var(--sage-muted);
+            vertical-align: middle;
+            margin-right: 12px;
+        }
+
+        .hero h1 {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 300;
+            line-height: 1.05;
+            color: var(--cream);
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s 0.5s forwards;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--sage-muted);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: rgba(246, 241, 233, 0.7);
+            max-width: 520px;
+            font-weight: 300;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s 0.7s forwards;
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 2rem;
+            right: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(246, 241, 233, 0.4);
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            animation: fadeIn 1s 1.2s forwards;
+            opacity: 0;
+        }
+
+        .hero-scroll-line {
+            width: 1px;
+            height: 48px;
+            background: linear-gradient(to bottom, rgba(246,241,233,0.4), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { transform: scaleY(1); opacity: 0.4; }
+            50% { transform: scaleY(0.6); opacity: 1; }
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* ─── Section Commons ─── */
+        section {
+            position: relative;
+        }
+
+        .section-padding {
+            padding: 8rem 3rem;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--earth);
+            margin-bottom: 2rem;
+        }
+
+        .section-label::before {
+            content: '';
+            display: inline-block;
+            width: 24px;
+            height: 1.5px;
+            background: var(--earth);
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .section-title {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+            font-weight: 300;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title em {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--forest);
+        }
+
+        /* ─── Over Ons ─── */
+        .about {
+            background: var(--warm-white);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+            aspect-ratio: 4/5;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .about-image:hover img {
+            transform: scale(1.03);
+        }
+
+        .about-image::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: 1px solid rgba(0,0,0,0.06);
+            border-radius: 8px;
+            pointer-events: none;
+        }
+
+        .about-accent {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            width: 140px;
+            height: 140px;
+            border: 2px solid var(--sage-muted);
+            border-radius: 8px;
+            z-index: -1;
+        }
+
+        .about-text p {
+            font-size: 1.05rem;
+            line-height: 1.85;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .about-stat-row {
+            display: flex;
+            gap: 3rem;
+            margin-top: 2.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--cream-dark);
+        }
+
+        .about-stat {
+            text-align: left;
+        }
+
+        .about-stat-number {
+            font-family: 'Fraunces', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--forest);
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        .about-stat-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        /* ─── Farm Section ─── */
+        .farm {
+            background: var(--forest-deep);
+            color: var(--cream);
+            overflow: hidden;
+        }
+
+        .farm .section-label {
+            color: var(--sage-muted);
+        }
+
+        .farm .section-label::before {
+            background: var(--sage-muted);
+        }
+
+        .farm .section-title {
+            color: var(--cream);
+        }
+
+        .farm .section-title em {
+            color: var(--sage-muted);
+        }
+
+        .farm-intro {
+            max-width: 700px;
+            margin-bottom: 4rem;
+        }
+
+        .farm-intro p {
+            font-size: 1.1rem;
+            line-height: 1.85;
+            color: rgba(246, 241, 233, 0.65);
+            font-weight: 300;
+        }
+
+        .farm-gallery {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .farm-gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            aspect-ratio: 16/10;
+        }
+
+        .farm-gallery-item:nth-child(2) {
+            aspect-ratio: 4/3;
+        }
+
+        .farm-gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .farm-gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .farm-gallery-caption {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 2rem 1.5rem 1.5rem;
+            background: linear-gradient(to top, rgba(28,28,28,0.7), transparent);
+        }
+
+        .farm-gallery-caption span {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(246,241,233,0.7);
+        }
+
+        .farm-features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 4rem auto 0;
+        }
+
+        .farm-feature {
+            padding: 2rem;
+            border: 1px solid rgba(246, 241, 233, 0.08);
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+
+        .farm-feature:hover {
+            border-color: rgba(246, 241, 233, 0.2);
+        }
+
+        .farm-feature-icon {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 1.25rem;
+            color: var(--sage-muted);
+        }
+
+        .farm-feature h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 0.75rem;
+            color: var(--cream);
+        }
+
+        .farm-feature p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: rgba(246, 241, 233, 0.5);
+            font-weight: 300;
+        }
+
+        /* ─── History Section ─── */
+        .history {
+            background: var(--cream);
+        }
+
+        .history-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .history-text p {
+            font-size: 1.05rem;
+            line-height: 1.85;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .history-quote {
+            position: relative;
+            padding: 2rem 0 2rem 2rem;
+            border-left: 2px solid var(--earth-light);
+            margin: 2.5rem 0;
+        }
+
+        .history-quote p {
+            font-family: 'Fraunces', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            line-height: 1.6;
+            color: var(--forest);
+            font-weight: 300;
+            margin-bottom: 0;
+        }
+
+        .history-visual {
+            position: relative;
+        }
+
+        .history-visual-img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .history-year {
+            position: absolute;
+            top: -2rem;
+            right: -1.5rem;
+            font-family: 'Fraunces', serif;
+            font-size: 8rem;
+            font-weight: 300;
+            color: var(--cream-dark);
+            line-height: 1;
+            z-index: -1;
+            letter-spacing: -0.04em;
+        }
+
+        /* ─── Contact Section ─── */
+        .contact {
+            background: var(--warm-white);
+        }
+
+        .contact-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-info {
+            padding-right: 2rem;
+        }
+
+        .contact-info p {
+            font-size: 1.05rem;
+            line-height: 1.85;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+        }
+
+        .contact-details {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-details li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .contact-icon {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            color: var(--forest);
+            margin-top: 2px;
+        }
+
+        .contact-detail-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-detail-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--earth);
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-detail-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .contact-detail-value a {
+            color: var(--text-primary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--cream-dark);
+            transition: border-color 0.3s;
+        }
+
+        .contact-detail-value a:hover {
+            border-color: var(--forest);
+        }
+
+        .contact-map {
+            background: var(--cream);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            min-height: 400px;
+        }
+
+        .contact-map iframe {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0; left: 0;
+            border: none;
+            filter: saturate(0.8) contrast(1.05);
+        }
+
+        /* ─── Footer ─── */
+        footer {
+            background: var(--charcoal);
+            color: rgba(246, 241, 233, 0.4);
+            padding: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .footer-left img {
+            height: 28px;
+            border-radius: 3px;
+            opacity: 0.6;
+        }
+
+        .footer-brand {
+            font-family: 'Fraunces', serif;
+            font-size: 1rem;
+            font-weight: 400;
+            color: rgba(246, 241, 233, 0.6);
+        }
+
+        .footer-right {
+            font-size: 0.8rem;
+        }
+
+        /* ─── Scroll Animations ─── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* ─── Mobile Responsive ─── */
+        @media (max-width: 1024px) {
+            .section-padding {
+                padding: 5rem 2rem;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .about-image {
+                max-width: 500px;
+                aspect-ratio: 3/2;
+            }
+
+            .about-accent { display: none; }
+
+            .farm-gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .farm-features {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .history-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .history-visual {
+                order: -1;
+                max-width: 500px;
+            }
+
+            .history-year {
+                font-size: 5rem;
+                top: -1rem;
+                right: -0.5rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.25rem 1.5rem;
+            }
+
+            nav.scrolled {
+                padding: 0.75rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0; right: 0;
+                background: rgba(253, 251, 247, 0.97);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 1.5rem;
+                gap: 1rem;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .nav-links a {
+                color: var(--text-secondary) !important;
+                font-size: 0.9rem;
+                padding: 0.5rem 0;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero-content {
+                padding: 0 1.5rem 3.5rem;
+            }
+
+            .hero-scroll { display: none; }
+
+            .section-padding {
+                padding: 4rem 1.5rem;
+            }
+
+            .about-stat-row {
+                gap: 2rem;
+            }
+
+            .farm-features {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-map {
+                min-height: 300px;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── Navigation ─── -->
+    <nav id="navbar">
+        <a href="#" class="nav-logo">
+            <img src="https://despithold.nl/wp-content/uploads/2022/11/Screenshot-2022-11-07-at-21.31.39-123x117.png" alt="De Spithold logo">
+            <span class="nav-logo-text">De Spithold</span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#over-ons">Over Ons</a></li>
+            <li><a href="#boerderij">Boerderij</a></li>
+            <li><a href="#geschiedenis">Geschiedenis</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- ─── Hero ─── -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <img src="https://despithold.nl/wp-content/uploads/2022/11/WhatsApp-Image-2022-10-29-at-8.41.28-PM-1024x768.jpeg" alt="De Spithold boerderij" id="heroBg">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="hero-label">Biologische melkveehouderij</span>
+            <h1>Waar natuur<br>en landbouw<br><em>samenkomen</em></h1>
+            <p class="hero-subtitle">Al sinds 2007 combineert familie Smallegoor op De Spithold in Almen duurzame melkveehouderij met rijke biodiversiteit langs de Berkel.</p>
+        </div>
+        <div class="hero-scroll">
+            <span>Scroll</span>
+            <div class="hero-scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- ─── Over Ons ─── -->
+    <section class="about section-padding" id="over-ons">
+        <div class="about-grid">
+            <div class="about-image reveal">
+                <img src="https://despithold.nl/wp-content/uploads/2022/11/WhatsApp-Image-2022-10-30-at-6.50.51-PM-1.jpeg" alt="Familie Smallegoor op De Spithold">
+                <div class="about-accent"></div>
+            </div>
+            <div class="about-text">
+                <span class="section-label reveal">Over Ons</span>
+                <h2 class="section-title reveal reveal-delay-1">Een familie<br>met <em>passie</em> voor<br>het land</h2>
+                <p class="reveal reveal-delay-2">Sinds 2007 runt de familie Smallegoor de biologische melkveehouderij De Spithold in het prachtige Almen. Gelegen langs de kronkelende Berkel, is ons bedrijf een plek waar traditie en innovatie hand in hand gaan.</p>
+                <p class="reveal reveal-delay-2">Wij geloven in een eerlijke, duurzame aanpak van landbouw. Onze koeien grazen vrij in de weilanden en worden met zorg en respect behandeld. Het resultaat: heerlijke biologische melk van gelukkige dieren.</p>
+                <div class="about-stat-row reveal reveal-delay-3">
+                    <div class="about-stat">
+                        <div class="about-stat-number">60</div>
+                        <div class="about-stat-label">Holstein koeien</div>
+                    </div>
+                    <div class="about-stat">
+                        <div class="about-stat-number">35</div>
+                        <div class="about-stat-label">Jongvee & kalveren</div>
+                    </div>
+                    <div class="about-stat">
+                        <div class="about-stat-number">2007</div>
+                        <div class="about-stat-label">Sinds</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Onze Boerderij ─── -->
+    <section class="farm section-padding" id="boerderij">
+        <div class="farm-intro reveal">
+            <span class="section-label">Onze Boerderij</span>
+            <h2 class="section-title">Biologisch boeren<br>met <em>respect</em></h2>
+            <p>Op De Spithold draait alles om de balans tussen effici&euml;nte productie en een hoge biodiversiteit. Ons land langs de Berkel biedt een uniek ecosysteem dat we koesteren en beschermen.</p>
+        </div>
+        <div class="farm-gallery">
+            <div class="farm-gallery-item reveal">
+                <img src="https://despithold.nl/wp-content/uploads/2022/11/WhatsApp-Image-2022-10-30-at-2.11.31-PM.jpeg" alt="Onze Holstein koeien">
+                <div class="farm-gallery-caption">
+                    <span>Onze Holstein koeien in de wei</span>
+                </div>
+            </div>
+            <div class="farm-gallery-item reveal reveal-delay-1">
+                <img src="https://despithold.nl/wp-content/uploads/2022/11/Knipsel.png" alt="De Spithold boerderij">
+                <div class="farm-gallery-caption">
+                    <span>Het hart van De Spithold</span>
+                </div>
+            </div>
+        </div>
+        <div class="farm-features">
+            <div class="farm-feature reveal">
+                <svg class="farm-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22c4-4 8-7.5 8-12a8 8 0 10-16 0c0 4.5 4 8 8 12z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+                <h3>Biologisch Gecertificeerd</h3>
+                <p>Wij werken volledig biologisch, zonder kunstmest of bestrijdingsmiddelen. Onze grond en dieren krijgen de zorg die ze verdienen.</p>
+            </div>
+            <div class="farm-feature reveal reveal-delay-1">
+                <svg class="farm-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 8C8 10 5.9 16.17 3.82 21.34L3 21l1.5-4.5M20 2l-1 1.5"/>
+                    <path d="M17 8c2-1 4.5-.5 6 1-1.5 1.5-3 2-4.5 2M17 8c-1 2-.5 4.5 1 6 1.5-1.5 2-3 2-4.5"/>
+                    <path d="M11.38 12.13A6 6 0 017 18c-.5 0-1.5 0-3-1"/>
+                </svg>
+                <h3>Hoge Biodiversiteit</h3>
+                <p>Langs de Berkel cre&euml;ren we ruimte voor flora en fauna. Bloemrijke randen, weidevogels en een gezond bodemleven zijn onze trots.</p>
+            </div>
+            <div class="farm-feature reveal reveal-delay-2">
+                <svg class="farm-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
+                </svg>
+                <h3>Duurzaam & Toekomstgericht</h3>
+                <p>Met oog voor de toekomst investeren we in duurzame landbouwmethoden die goed zijn voor mens, dier en milieu.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Geschiedenis ─── -->
+    <section class="history section-padding" id="geschiedenis">
+        <div class="history-container">
+            <div class="history-text">
+                <span class="section-label reveal">Geschiedenis</span>
+                <h2 class="section-title reveal reveal-delay-1">De naam<br><em>Spithold</em></h2>
+                <p class="reveal reveal-delay-2">De naam "Spithold" verwijst naar een sleutelbewaarder. Eeuwenlang werd op deze plek de sleutel bewaard van de sluis van een nabijgelegen brug over de Berkel.</p>
+                <div class="history-quote reveal reveal-delay-2">
+                    <p>De steden Zutphen en Deventer voerden meerdere oorlogen om deze strategische locatie langs de Berkel.</p>
+                </div>
+                <p class="reveal reveal-delay-3">Deze rijke geschiedenis geeft onze boerderij een bijzondere identiteit. Het herinnert ons eraan dat dit land al eeuwenlang een sleutelrol speelt in de regio. Vandaag de dag zetten wij deze traditie voort met dezelfde toewijding en zorg voor het land.</p>
+            </div>
+            <div class="history-visual reveal">
+                <span class="history-year">1600</span>
+                <img class="history-visual-img" src="https://despithold.nl/wp-content/uploads/2022/11/WhatsApp-Image-2022-10-30-at-6.50.51-PM-1.jpeg" alt="Historische locatie De Spithold">
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Contact ─── -->
+    <section class="contact section-padding" id="contact">
+        <div class="contact-grid">
+            <div class="contact-info">
+                <span class="section-label reveal">Contact</span>
+                <h2 class="section-title reveal reveal-delay-1">Neem <em>contact</em><br>met ons op</h2>
+                <p class="reveal reveal-delay-2">Benieuwd naar onze boerderij of heeft u vragen? Neem gerust contact op. We verwelkomen u graag op De Spithold.</p>
+                <ul class="contact-details reveal reveal-delay-3">
+                    <li>
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        <div class="contact-detail-content">
+                            <span class="contact-detail-label">Locatie</span>
+                            <span class="contact-detail-value">Almen, Gelderland</span>
+                        </div>
+                    </li>
+                    <li>
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                        </svg>
+                        <div class="contact-detail-content">
+                            <span class="contact-detail-label">Telefoon</span>
+                            <span class="contact-detail-value"><a href="tel:+31575431216">(0575) 43 12 16</a></span>
+                        </div>
+                    </li>
+                    <li>
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="16" rx="2"/>
+                            <path d="M22 7l-8.97 5.7a1.94 1.94 0 01-2.06 0L2 7"/>
+                        </svg>
+                        <div class="contact-detail-content">
+                            <span class="contact-detail-label">E-mail</span>
+                            <span class="contact-detail-value"><a href="mailto:h.smallegoor@kpnplanet.nl">h.smallegoor@kpnplanet.nl</a></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="contact-map reveal">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9735.63!2d6.31!3d52.15!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b7e2a0a0a0a0a0%3A0x0!2sAlmen!5e0!3m2!1snl!2snl!4v1"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Locatie De Spithold, Almen">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── Footer ─── -->
+    <footer>
+        <div class="footer-left">
+            <img src="https://despithold.nl/wp-content/uploads/2022/11/Screenshot-2022-11-07-at-21.31.39-123x117.png" alt="De Spithold">
+            <span class="footer-brand">De Spithold</span>
+        </div>
+        <div class="footer-right">
+            &copy; 2026 De Spithold &mdash; Biologische Melkveehouderij, Almen
+        </div>
+    </footer>
+
+    <script>
+        // ─── Navbar scroll effect ───
+        const navbar = document.getElementById('navbar');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            if (scrollY > 80) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            lastScroll = scrollY;
+        });
+
+        // ─── Mobile menu toggle ───
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+            const spans = menuToggle.querySelectorAll('span');
+            if (navLinks.classList.contains('open')) {
+                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+            } else {
+                spans[0].style.transform = '';
+                spans[1].style.opacity = '';
+                spans[2].style.transform = '';
+            }
+        });
+
+        // Close menu on link click
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+                const spans = menuToggle.querySelectorAll('span');
+                spans[0].style.transform = '';
+                spans[1].style.opacity = '';
+                spans[2].style.transform = '';
+            });
+        });
+
+        // ─── Parallax hero ───
+        const heroBg = document.getElementById('heroBg');
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const heroHeight = document.querySelector('.hero').offsetHeight;
+            if (scrollY < heroHeight) {
+                const parallax = scrollY * 0.35;
+                heroBg.style.transform = `scale(1.1) translateY(${parallax}px)`;
+            }
+        });
+
+        // ─── Scroll reveal ───
+        const reveals = document.querySelectorAll('.reveal');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -80px 0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        reveals.forEach(el => observer.observe(el));
+
+        // ─── Smooth scroll for anchor links ───
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const top = target.getBoundingClientRect().top + window.scrollY - offset;
+                    window.scrollTo({ top, behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

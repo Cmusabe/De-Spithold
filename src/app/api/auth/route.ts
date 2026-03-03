@@ -2,27 +2,34 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyPassword, createToken, COOKIE_NAME } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
-  const { password } = await request.json();
+  try {
+    const { password } = await request.json();
 
-  if (!password || !(await verifyPassword(password))) {
+    if (!password || !(await verifyPassword(password))) {
+      return NextResponse.json(
+        { error: "Ongeldig wachtwoord" },
+        { status: 401 }
+      );
+    }
+
+    const token = await createToken();
+    const response = NextResponse.json({ success: true });
+
+    response.cookies.set(COOKIE_NAME, token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: "/",
+    });
+
+    return response;
+  } catch {
     return NextResponse.json(
-      { error: "Ongeldig wachtwoord" },
-      { status: 401 }
+      { error: "Er is een fout opgetreden" },
+      { status: 500 }
     );
   }
-
-  const token = createToken();
-  const response = NextResponse.json({ success: true });
-
-  response.cookies.set(COOKIE_NAME, token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    maxAge: 60 * 60 * 24 * 7, // 7 days
-    path: "/",
-  });
-
-  return response;
 }
 
 export async function DELETE() {

@@ -1,24 +1,35 @@
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
+import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import { timingSafeEqual } from "crypto";
 
-const JWT_SECRET = process.env.JWT_SECRET || "dev-secret";
+const JWT_SECRET = new TextEncoder().encode(
+  process.env.JWT_SECRET || "dev-secret"
+);
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
 const COOKIE_NAME = "spithold_admin";
 
-const hashedPassword = bcrypt.hashSync(ADMIN_PASSWORD, 10);
-
 export async function verifyPassword(password: string): Promise<boolean> {
-  return bcrypt.compareSync(password, hashedPassword);
-}
-
-export function createToken(): string {
-  return jwt.sign({ role: "admin" }, JWT_SECRET, { expiresIn: "7d" });
-}
-
-export function verifyToken(token: string): boolean {
   try {
-    jwt.verify(token, JWT_SECRET);
+    const a = Buffer.from(password);
+    const b = Buffer.from(ADMIN_PASSWORD);
+    if (a.length !== b.length) return false;
+    return timingSafeEqual(a, b);
+  } catch {
+    return false;
+  }
+}
+
+export async function createToken(): Promise<string> {
+  return new SignJWT({ role: "admin" })
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime("7d")
+    .setIssuedAt()
+    .sign(JWT_SECRET);
+}
+
+export async function verifyToken(token: string): Promise<boolean> {
+  try {
+    await jwtVerify(token, JWT_SECRET);
     return true;
   } catch {
     return false;

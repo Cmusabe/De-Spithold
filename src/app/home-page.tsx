@@ -70,18 +70,12 @@ export function HomePage({ content }: { content: SiteContent }) {
           nav.menu-open .nav-text { color: #1E3529 !important; }
           nav.menu-open .burger span { background: #1C1C1C !important; }
         `}</style>
-        <a href="#" className="flex items-center gap-3 no-underline">
+        <a href="#" className="flex items-center no-underline">
           <img
-            src="https://despithold.nl/wp-content/uploads/2022/11/Screenshot-2022-11-07-at-21.31.39-123x117.png"
+            src="/logo.png"
             alt="De Spithold logo"
-            className="h-10 rounded"
+            className="h-14 md:h-16"
           />
-          <span
-            className="nav-text text-xl font-semibold text-cream"
-            style={{ fontFamily: "Fraunces, serif", letterSpacing: "-0.02em" }}
-          >
-            De Spithold
-          </span>
         </a>
         {/* Desktop nav */}
         <ul className="hidden md:flex gap-10 list-none">
@@ -523,16 +517,10 @@ export function HomePage({ content }: { content: SiteContent }) {
       <footer className="bg-charcoal text-cream/40 py-8 px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4">
         <div className="flex items-center gap-3">
           <img
-            src="https://despithold.nl/wp-content/uploads/2022/11/Screenshot-2022-11-07-at-21.31.39-123x117.png"
+            src="/logo.png"
             alt="De Spithold"
-            className="h-7 rounded opacity-60"
+            className="h-10 opacity-60"
           />
-          <span
-            className="text-cream/60"
-            style={{ fontFamily: "Fraunces, serif", fontSize: "1rem" }}
-          >
-            De Spithold
-          </span>
         </div>
         <div className="text-sm">
           &copy; {new Date().getFullYear()} De Spithold &mdash; Biologische

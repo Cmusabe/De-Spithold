@@ -145,21 +145,18 @@ export default function AdminPage() {
     return (
       <div className="min-h-screen bg-[#f8f6f3] flex items-center justify-center px-4">
         <div className="bg-white rounded-2xl shadow-lg p-10 w-full max-w-md">
-          <div className="flex items-center gap-3 mb-8">
+          <div className="flex flex-col items-center mb-8">
             <img
-              src="https://despithold.nl/wp-content/uploads/2022/11/Screenshot-2022-11-07-at-21.31.39-123x117.png"
+              src="/logo.png"
               alt="Logo"
-              className="h-10 rounded"
+              className="h-20 mb-3"
             />
-            <div>
-              <h1
-                className="text-2xl text-[#1E3529]"
-                style={{ fontFamily: "Fraunces, serif", fontWeight: 600 }}
-              >
-                Admin
-              </h1>
-              <p className="text-sm text-[#9B7B5B]">De Spithold</p>
-            </div>
+            <h1
+              className="text-2xl text-[#1E3529]"
+              style={{ fontFamily: "Fraunces, serif", fontWeight: 600 }}
+            >
+              Admin
+            </h1>
           </div>
           <form onSubmit={handleLogin}>
             <label className="block text-sm font-medium text-[#5A5A5A] mb-2">
@@ -342,9 +339,9 @@ export default function AdminPage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 md:gap-3 min-w-0">
             <img
-              src="https://despithold.nl/wp-content/uploads/2022/11/Screenshot-2022-11-07-at-21.31.39-123x117.png"
+              src="/logo.png"
               alt="Logo"
-              className="h-7 md:h-8 rounded shrink-0"
+              className="h-9 md:h-10 shrink-0"
             />
             <span
               className="text-base md:text-lg text-[#1E3529] truncate"

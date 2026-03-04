@@ -60,8 +60,7 @@ export const defaultContent: SiteContent = {
     titleEmphasis: "samenkomen",
     subtitle:
       "Al sinds 2007 combineert familie Smallegoor op De Spithold in Almen duurzame melkveehouderij met rijke biodiversiteit langs de Berkel.",
-    image:
-      "https://despithold.nl/wp-content/uploads/2022/11/WhatsApp-Image-2022-10-29-at-8.41.28-PM-1024x768.jpeg",
+    image: "/hero.jpeg",
   },
   about: {
     title: "Een familie met",
@@ -71,7 +70,7 @@ export const defaultContent: SiteContent = {
     paragraph2:
       "Wij geloven in een eerlijke, duurzame aanpak van landbouw. Onze koeien grazen vrij in de weilanden en worden met zorg en respect behandeld. Het resultaat: heerlijke biologische melk van gelukkige dieren.",
     image:
-      "https://despithold.nl/wp-content/uploads/2022/11/WhatsApp-Image-2022-10-30-at-6.50.51-PM-1.jpeg",
+      "/familie.jpeg",
     stat1Number: "60",
     stat1Label: "Holstein koeien",
     stat2Number: "35",
@@ -85,9 +84,9 @@ export const defaultContent: SiteContent = {
     description:
       "Op De Spithold draait alles om de balans tussen effici\u00EBnte productie en een hoge biodiversiteit. Ons land langs de Berkel biedt een uniek ecosysteem dat we koesteren en beschermen.",
     image1:
-      "https://despithold.nl/wp-content/uploads/2022/11/WhatsApp-Image-2022-10-30-at-2.11.31-PM.jpeg",
+      "/koeien.jpeg",
     image1Caption: "Onze Holstein koeien in de wei",
-    image2: "https://despithold.nl/wp-content/uploads/2022/11/Knipsel.png",
+    image2: "/boerderij.png",
     image2Caption: "Het hart van De Spithold",
     feature1Title: "Biologisch Gecertificeerd",
     feature1Text:
@@ -109,7 +108,7 @@ export const defaultContent: SiteContent = {
     paragraph2:
       "Deze rijke geschiedenis geeft onze boerderij een bijzondere identiteit. Het herinnert ons eraan dat dit land al eeuwenlang een sleutelrol speelt in de regio. Vandaag de dag zetten wij deze traditie voort met dezelfde toewijding en zorg voor het land.",
     image:
-      "https://despithold.nl/wp-content/uploads/2022/11/WhatsApp-Image-2022-10-30-at-6.50.51-PM-1.jpeg",
+      "/familie.jpeg",
     year: "1600",
   },
   contact: {
